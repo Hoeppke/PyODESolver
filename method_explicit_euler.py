@@ -8,8 +8,8 @@ class ExplicitEuler(StepMethod):
         ordinary differential equations.
     """
 
-    def __init__(self, steplen, func):
-        StepMethod.__init__(self, steplen, func)
+    def step(self,func,uvec,time,steplen):
+        return uvec+steplen*func.eval(uvec,time)
 
 
 
