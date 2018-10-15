@@ -22,18 +22,18 @@ class StepMethod(object):
         self.func = func
 
     def generate(self):
-        Tstart, Tend = self.interval
-        Tgrid = np.linspace(Tstart, Tend, self.N)
-        (time, uvec) = (Tstart, self.y0)
+        t_start, t_end = self.domain
+        t_grid = np.linspace(t_start, t_end, self.N)
+        steplen = t_grid[1] - t_grid[0]
+        (time, uvec) = (t_start, self.y0)
         yield (time, uvec)
-        for tIdx in range(1, len(Tgrid)):
-            time = Tgrid[tIdx]
-            uvec = self.step(self.func, uvec)
-
+        for t_idx in range(len(t_grid)-1):
+            time = t_grid[t_idx]
+            uvec = uvec + steplen * self.step(self.func, uvec, time, steplen)
+            yield (time, uvec)
 
     def newton_iteration():
         pass
-
 
     def step(self, f, u, t, h):
         raise NotImplementedError
