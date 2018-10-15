@@ -1,12 +1,19 @@
-from step_method import step_method
+from step_method import StepMethod
 
 
-class explicit_euler(step_method):
+class ExplicitEuler(StepMethod):
 
-    """Docstring for explicit_euler. """
+    """
+        This class implements the explicit_euler method for solving
+        ordinary differential equations.
+    """
 
-    def __init__(self):
-        """TODO: to be defined1. """
-        step_method.__init__(self)
+    def __init__(self, steplen, func):
+        StepMethod.__init__(self, steplen, func)
+
+
+
+
+
 
 
