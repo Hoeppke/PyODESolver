@@ -58,6 +58,3 @@ class ExampleFunc01(RHSFunction):
         N = len(y_vec)
         jac = sparse.diags([-2.0], [0], shape=(N, N))
         return jac
-
-
-
