@@ -3,7 +3,7 @@ import scipy.sparse as sparse
 
 class MidPointRule(StepMethod):
 
-    """ 
+    """
         This implements MPR
     """
 
@@ -12,7 +12,7 @@ class MidPointRule(StepMethod):
         yprev=np.copy(uvec)
         err=1
         numit=0
-        while err>tolerance&numit<5
+        while err > tolerance and numit < 5:
             yprev=np.copy(y)
             A=(np.eye(len(uvec))-steplen/2.0*func.jacobian(yprev,time))
             F=yprev-uvec-steplen/2*(func.eval(yprev,time)+funct.eval(uvec,time))

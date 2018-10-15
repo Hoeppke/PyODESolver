@@ -1,4 +1,5 @@
 import scipy.sparse as sparse
+import numpy as np
 
 
 class RHSFunction(object):
@@ -58,3 +59,20 @@ class ExampleFunc01(RHSFunction):
         N = len(y_vec)
         jac = sparse.diags([-2.0], [0], shape=(N, N))
         return jac
+
+def ExampleFunc01_solution(y_0, t):
+    """
+    Evaluates the analytic solution to the the RHS_function
+    ExampleFunc01. The purpose of this method is to provide
+    a flexible testing environment.
+
+    :y_0: The initial data
+    :t: The time value. Passing an array is valid.
+    :returns: The solution as a list
+
+    """
+
+    val1 = y_0
+    val2 = np.exp(-2.0*t)
+    res = np.outer(val1, val2)
+    return res
