@@ -32,8 +32,5 @@ class StepMethod(object):
             uvec = self.step(self.func, uvec, time, steplen)
             yield (time, uvec)
 
-    def newton_iteration():
-        pass
-
     def step(self, f, u, t, h):
         raise NotImplementedError
