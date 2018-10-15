@@ -1,4 +1,6 @@
-import scipy.sparse as scisp
+import scipy.sparse as sparse
+
+
 class RHSFunction(object):
 
     """Docstring for RHSFunction. """
@@ -54,7 +56,7 @@ class ExampleFunc01(RHSFunction):
 
         """
         N = len(y_vec)
-        jac = scisp.diags([-2.0], [0], shape=(N, N))
+        jac = sparse.diags([-2.0], [0], shape=(N, N))
         return jac
 
 
