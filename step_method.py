@@ -29,7 +29,7 @@ class StepMethod(object):
         yield (time, uvec)
         for t_idx in range(len(t_grid)-1):
             time = t_grid[t_idx]
-            uvec = uvec + steplen * self.step(self.func, uvec, time, steplen)
+            uvec = self.step(self.func, uvec, time, steplen)
             yield (time, uvec)
 
     def newton_iteration():
