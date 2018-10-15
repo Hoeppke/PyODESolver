@@ -15,6 +15,7 @@ class MidPointRule(StepMethod):
         while err>tolerance&numit<5
             yprev=np.copy(y)
             A=(np.eye(len(uvec))-steplen/2.0*func.jacobian(yprev,time))
-            b=yprev+steplen/2*func.eval(yprev,time)+np.dot(A,yprev)
+            F=yprev-uvec-steplen/2*(func.eval(yprev,time)+funct.eval(uvec,time))
+            b=-F+np.dot(A,yprev)
             y=sparse.linalg.spsolve(A,b)
         return y
