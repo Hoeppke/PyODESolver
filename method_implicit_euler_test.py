@@ -64,9 +64,7 @@ class TestImplicitEulerExample(unittest.TestCase):
         isOkay = True
         for Nidx in range(1, len(N_arr)):
             quotient = Err_arr[Nidx-1] / Err_arr[Nidx]
-            # Test if the improvement is in 10% of the expected value
-            print(quotient)
-            if(quotient < 3.6 or quotient > 4.4):
+            if(quotient < 1.9):
                 # We expect implicit euler to have second order here becuase
                 # f'' = 0
                 isOkay = False

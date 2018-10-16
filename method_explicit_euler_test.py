@@ -63,7 +63,7 @@ class TestExplicitEulerMethod(unittest.TestCase):
         for Nidx in range(1, len(N_arr)):
             quotient = Err_arr[Nidx-1] / Err_arr[Nidx]
             # Test if the improvement is in 10% of the expected value
-            if(quotient < 1.9 or quotient > 2.1):
+            if(quotient < 1.9):
                 isOkay = False
         # Is okay contains if all improvemnts match up with expectations
         self.assertTrue(isOkay)
