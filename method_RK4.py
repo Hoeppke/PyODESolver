@@ -1,13 +1,13 @@
 from step_method import StepMethod
 import scipy.sparse as sparse
 
-class MidPointRule(StepMethod):
+class RK4(StepMethod):
 
     """
         This implements RK4
     """
 
-    def step(self,func,uvec,time,steplen)
+    def step(self,func,uvec,time,steplen):
         k1=func.eval(uvec,time)
         k2=func.eval(uvec+steplen*k1/2,time+steplen/2)
         k3=func.eval(uvec+steplen*k2/2,time+steplen/2)
