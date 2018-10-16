@@ -1,13 +1,11 @@
 import numpy as np
-import scipy.sparse as sparse
 import matplotlib.pyplot as plt
 import unittest
 from method_RK4 import RK4
 from rhs_function import ExampleFunc01
 from rhs_function import ExampleFunc01_solution
-from step_method import StepMethod
 
-class RK4(StepMethod):
+class TestRK4(unittest.TestCase):
 
         def test_accuracy01(self):
             N=10**3
