@@ -2,7 +2,6 @@ from method_explicit_euler import ExplicitEuler
 from method_implicit_euler import ImplicitEuler
 from rhs_function import ExampleFunc01
 from rhs_function import ExampleFunc01_solution
-import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 
