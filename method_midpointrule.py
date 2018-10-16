@@ -23,4 +23,5 @@ class MidPointRule(StepMethod):
             b=-np.dot(I,F)+np.dot(A,yprev)
             y=sparse.linalg.spsolve(A,b)
             numit += 1
+            err=np.max(np.abs(F))
         return y
