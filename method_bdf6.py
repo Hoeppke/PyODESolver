@@ -1,10 +1,11 @@
+from method_RK4 import RK4 as RK4
 from method_explicit_euler import ExplicitEuler
 from rhs_function import RHSFunction
 from scipy import optimize
 from step_method import StepMethod
-from method_RK4 import RK4 as RK4
 import numpy as np
 import scipy.sparse as sparse
+
 
 class BDF6Method(StepMethod):
 
@@ -30,11 +31,11 @@ class BDF6Method(StepMethod):
 
         # For BDF6 to work we need 6 pieces of old data.
         # figure out if the past data is filled well:
-        if(len(self.past_data) >= 6):
+        y_new = 0
+        if(len(self.past_data) >= 10):
             # Implementation of the BDF6 method
             # Guess the y_new using RK4
-            y_new = next(self.starterSolver)
-            t_new = t + h
+            t_new, y_new = next(self.starterSolver)
             N = len(u)
 
             # define internal functions for the newton method:
@@ -49,7 +50,7 @@ class BDF6Method(StepMethod):
                 val -= h * (60.0 / 147.0) * f.eval(y_new, t_new)
                 return val
 
-            # define the internal jacobinal for the newton method:
+            # define the internal Jacobian for the newton method:
             def myJacF(y_new):
                 val1 = sparse.eye(N)
                 val2 = -1.0 * (60.0/147.0) * h * f.jacobian(y_new, t_new)
@@ -67,13 +68,9 @@ class BDF6Method(StepMethod):
 
             # Append to the list of past solutions:
             self.past_data.append([y_new, t_new])
-            return y_new
 
         else:
             # Use RK4 for the first 6 timesteps:
-            y_new = next(self.starterSolver)
-            t_new = t + h
+            t_new, y_new = next(self.starterSolver)
             self.past_data.append([y_new, t_new])
-            return y_new
-
-
+        return y_new
