@@ -43,3 +43,4 @@ class ImplicitEuler(StepMethod):
             itercount += 1
             err = np.max(np.abs(myF(y_new)))
         return y_new
+
