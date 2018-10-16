@@ -29,6 +29,9 @@ class RHSFunction(object):
         """
         raise NotImplementedError
 
+    def isLinear(self):
+        raise NotImplementedError
+
 class ExampleFunc01(RHSFunction):
 
     """Docstring for ExampleFunc01. """
@@ -59,6 +62,14 @@ class ExampleFunc01(RHSFunction):
         N = len(y_vec)
         jac = sparse.diags([-2.0], [0], shape=(N, N))
         return jac
+
+    def isLinear(self):
+        """ Returns weather this function is linear. Spoiler alert...
+        It is :)
+
+        :returns: True
+        """
+        return True
 
 def ExampleFunc01_solution(y_0, t):
     """
