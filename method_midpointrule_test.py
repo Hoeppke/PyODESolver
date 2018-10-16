@@ -26,6 +26,46 @@ class TestMidPointRule(unittest.TestCase):
         print(err)
         self.assertTrue(err < 4.0*10**(-7))
 
+    def test_convergence_rate(self):
+        N_arr = [2**n for n in range(5, 11)]
+
+        def computeErr(N):
+            """TODO: Docstring for computeErr.
+
+            :N: Number of gridpoints
+            :returns: err in inf norm
+
+            """
+            t = np.linspace(0, 1, num=N)
+            # y0 = np.sin(np.linspace(-1.0*np.pi, 1.0*np.pi))
+            y0 = [np.pi]
+            exactSol = ExampleFunc01_solution(y0, t).T
+            # Compute numerical solution:
+            mpr_solver = MidPointRule(N, y0, [0, 1], ExampleFunc01())
+            solution = mpr_solver.generate()
+            numericSol = np.zeros_like(exactSol)
+            idx = 0
+            for (time, val) in solution:
+                numericSol[idx] = val
+                idx += 1
+
+            err = np.max(np.abs(exactSol - numericSol))
+            return err
+
+        Err_arr = []
+        for Nidx in range(len(N_arr)):
+            N = N_arr[Nidx]
+            err = computeErr(N)
+            Err_arr.append(err)
+
+        isOkay = True
+        for Nidx in range(1, len(N_arr)):
+            quotient = Err_arr[Nidx-1] / Err_arr[Nidx]
+            # Test if the improvement is in 10% of the expected value
+            if(quotient < 3.6 or quotient > 4.4):
+                isOkay = False
+        # Is okay contains if all improvemnts match up with expectations
+        self.assertTrue(isOkay)
 
 if __name__ == "__main__":
     unittest.main()
