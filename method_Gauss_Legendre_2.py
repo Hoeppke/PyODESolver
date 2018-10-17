@@ -22,7 +22,7 @@ class GaussLegendre(StepMethod):
             self.c1=0.5-np.sqrt(3)/6
             self.c2=0.5+np.sqrt(3)/6
 
-        def step(self,f,u, t, h ,tol =  10**(-14), maxiter = 10):
+        def step(self,f,u, t, h ,tol =  10**(-12), maxiter = 10):
             t_old= t
             #  Copy u
             y_old=np.copy(u)
