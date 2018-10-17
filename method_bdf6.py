@@ -24,37 +24,39 @@ class BDF6Method(StepMethod):
         self.starterMethod = RK4(N, y0, domain, func)
         self.starterSolver = self.starterMethod.generate()
 
-    def step(self, f, u, t, h, tol=10**(-10), maxiter=10):
+    def step(self, f, u, t, h, tol=10**(-12), maxiter=10):
         """Implements the step method for the BDF6 method
         :returns: generator for the step values
         """
 
         # For BDF6 to work we need 6 pieces of old data.
         # figure out if the past data is filled well:
-        y_new = 0
-        if(len(self.past_data) >= 10):
+        if(len(self.past_data) >= 6):
+            print("\n")
+            print(self.past_data)
             # Implementation of the BDF6 method
             # Guess the y_new using RK4
-            t_new, y_new = next(self.starterSolver)
+            t_new = t + h
+            y_new = np.copy(u) + h * f.eval(u, t)
             N = len(u)
 
             # define internal functions for the newton method:
-            def myF(y_new):
-                val = y_new
+            def myF(y):
+                val = np.copy(y)
                 val -= (360.0 / 147.0) * self.past_data[-1][0]
                 val += (450.0 / 147.0) * self.past_data[-2][0]
                 val -= (400.0 / 147.0) * self.past_data[-3][0]
                 val += (225.0 / 147.0) * self.past_data[-4][0]
                 val -= (72.0 / 147.0) * self.past_data[-5][0]
                 val += (10.0 / 147.0) * self.past_data[-6][0]
-                val -= h * (60.0 / 147.0) * f.eval(y_new, t_new)
+                val -= h * (60.0 / 147.0) * f.eval(np.copy(y), t_new)
                 return val
 
             # define the internal Jacobian for the newton method:
-            def myJacF(y_new):
+            def myJacF(y):
                 val1 = sparse.eye(N)
-                val2 = -1.0 * (60.0/147.0) * h * f.jacobian(y_new, t_new)
-                return val1 + val2
+                val2 = (60.0 / 147.0) * h * f.jacobian(np.copy(y), t_new)
+                return val1 - val2
 
             itercount = 0
             err = 1
@@ -65,9 +67,10 @@ class BDF6Method(StepMethod):
                 y_new = y_new - y_update
                 itercount += 1
                 err = np.max(np.abs(myF(y_new)))
-
+                # Err is always machine precision
             # Append to the list of past solutions:
             self.past_data.append([y_new, t_new])
+            self.past_data.pop(0)
 
         else:
             # Use RK4 for the first 6 timesteps:
