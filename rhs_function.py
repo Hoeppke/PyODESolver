@@ -117,7 +117,7 @@ def ExampleFunc02_solution(y_0,t):
 
     val01 = 1/(np.log(1+t)+1)
     val02 = 1/(1+t)
-    val03 =  np.vstack((val01,val02))
+    val03 = np.vstack((val01,val02))
     return val03
 
 
