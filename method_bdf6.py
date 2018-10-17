@@ -16,13 +16,15 @@ class BDF6Method(StepMethod):
     def __init__(self, N, y0, domain, func):
         StepMethod.__init__(self, N, y0, domain, func)
 
+        self.past_data = []
         # Start appending data to past data
         t0, tend = domain
-        self.past_data.append([y0, t0])
+        self.past_data.append(y0)
 
         # Define RK4 as the starter method:
         self.starterMethod = RK4(N, y0, domain, func)
         self.starterSolver = self.starterMethod.generate()
+        next(self.starterSolver)
 
     def step(self, f, u, t, h, tol=10**(-12), maxiter=10):
         """Implements the step method for the BDF6 method
@@ -32,8 +34,6 @@ class BDF6Method(StepMethod):
         # For BDF6 to work we need 6 pieces of old data.
         # figure out if the past data is filled well:
         if(len(self.past_data) >= 6):
-            print("\n")
-            print(self.past_data)
             # Implementation of the BDF6 method
             # Guess the y_new using RK4
             t_new = t + h
@@ -43,12 +43,12 @@ class BDF6Method(StepMethod):
             # define internal functions for the newton method:
             def myF(y):
                 val = np.copy(y)
-                val -= (360.0 / 147.0) * self.past_data[-1][0]
-                val += (450.0 / 147.0) * self.past_data[-2][0]
-                val -= (400.0 / 147.0) * self.past_data[-3][0]
-                val += (225.0 / 147.0) * self.past_data[-4][0]
-                val -= (72.0 / 147.0) * self.past_data[-5][0]
-                val += (10.0 / 147.0) * self.past_data[-6][0]
+                val -= (360.0 / 147.0) * (self.past_data[-1])
+                val += (450.0 / 147.0) * (self.past_data[-2])
+                val -= (400.0 / 147.0) * (self.past_data[-3])
+                val += (225.0 / 147.0) * (self.past_data[-4])
+                val -= (72.0 / 147.0) * (self.past_data[-5])
+                val += (10.0 / 147.0) * (self.past_data[-6])
                 val -= h * (60.0 / 147.0) * f.eval(np.copy(y), t_new)
                 return val
 
@@ -69,11 +69,13 @@ class BDF6Method(StepMethod):
                 err = np.max(np.abs(myF(y_new)))
                 # Err is always machine precision
             # Append to the list of past solutions:
-            self.past_data.append([y_new, t_new])
-            self.past_data.pop(0)
 
         else:
             # Use RK4 for the first 6 timesteps:
-            t_new, y_new = next(self.starterSolver)
-            self.past_data.append([y_new, t_new])
+            y_value = next(self.starterSolver)
+            y_new = np.copy(y_value[1])
+
+        # remove first value from array:
+        self.past_data.append(y_new)
+
         return y_new
