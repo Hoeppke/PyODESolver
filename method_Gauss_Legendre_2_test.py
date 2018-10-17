@@ -1,13 +1,12 @@
 from method_Gauss_Legendre_2 import GaussLegendre
 from rhs_function import ExampleFunc01
 from rhs_function import ExampleFunc01_solution
-import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 import time as timedomain
 
 class TestGaussLegendre(unittest.TestCase):
-        
+
         def test_accuracy01(self):
             N=2**10
             t=np.linspace(0,1,num=N)
@@ -33,7 +32,6 @@ class TestGaussLegendre(unittest.TestCase):
 
         def test_convergence_rate(self):
             N_arr = np.array([2**n for n in range(5, 11)])
-            
             def computeErr(N):
                 """TODO: Docstring for computeErr.
 

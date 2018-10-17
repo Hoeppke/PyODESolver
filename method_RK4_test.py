@@ -25,39 +25,34 @@ class TestRK4(unittest.TestCase):
             err=np.max(np.abs(exactSol-numericSol))
             print(err)
             self.assertTrue(err < 4.0*10**(-7))
-    
-        
-
 
         def test_convergence01(self):
-            NN=13
-            err=[1]*NN
-            ratio=[0]*(NN-1)
-            for i in range(1,NN):
-                N=10*2**i
-                t= np.linspace(0,1,num=N)
-                y0=np.array([np.pi])
-                exactSol=ExampleFunc01_solution(y0,t).T
-
+            Narr = [2**n for n in range(3, 12)]
+            err = []
+            for N in Narr:
+                t = np.linspace(0, 1, num=N)
+                y0 = np.array([np.pi])
+                exactSol = ExampleFunc01_solution(y0, t).T
                 #  Compute numerical solution:
-                RK4_solver=RK4(N,y0,[0, 1], ExampleFunc01())
-                solution=RK4_solver.generate()
-                numericSol=np.zeros_like(exactSol)
+                RK4_solver = RK4(N, y0, [0, 1], ExampleFunc01())
+                solution = RK4_solver.generate()
+                numericSol = np.zeros_like(exactSol)
                 idx = 0
-                for (time,val) in solution:
+                for (time, val) in solution:
                     numericSol[idx] = val
-                    idx+=1
+                    idx += 1
 
-                err[i]=np.max(np.abs(exactSol-numericSol))
-                isOkay=1
-                if i>1:
-                    ratio[i-1]=(err[i-1]/err[i])
-                    if ratio[i-1]<3.8:
-                        isOkay=0
-                    print((ratio[i-1],err[i]))
-            self.assertTrue(isOkay==1)
+                err.append(np.max(np.abs(exactSol-numericSol)))
+
+            isOkay = True
+            ratio = []
+            for i in range(1, len(err)):
+                ratio.append((err[i-1] / err[i]))
+                if ratio[i - 1] < 0.9*(2**4):
+                    isOkay = False
+                print((ratio[i-1], err[i]))
+            self.assertTrue(isOkay)
 
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -66,8 +66,8 @@ class TestBDF6Example(unittest.TestCase):
             quotient = Err_arr[Nidx-1] / Err_arr[Nidx]
             print(Err_arr[Nidx], quotient)
             # I am using RK4 to initialise the method.
-            # Can not expect anything higher than order 5
-            if(quotient < 0.75*(2**5)):
+            # Can not expect anything higher than order 4
+            if(quotient < 0.9*(2**4)):
                 # We expect implicit euler to have second order here becuase
                 # f'' = 0
                 isOkay = False
