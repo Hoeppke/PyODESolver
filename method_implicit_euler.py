@@ -5,6 +5,7 @@ from step_method import StepMethod
 import numpy as np
 import scipy.sparse as sparse
 
+
 class ImplicitEuler(StepMethod):
 
     """This Class implements the implicit Euler time step method
@@ -31,7 +32,8 @@ class ImplicitEuler(StepMethod):
         def myJacF(y_new):
             val1 = sparse.eye(N)
             val2 = -1.0 * (h/2) * f.jacobian(y_new, t_new)
-            return val1 + val2
+            csrMtx = sparse.csr_matrix(val1 + val2)
+            return csrMtx
 
         itercount = 0
         err = 1
@@ -43,4 +45,3 @@ class ImplicitEuler(StepMethod):
             itercount += 1
             err = np.max(np.abs(myF(y_new)))
         return y_new
-

@@ -2,6 +2,8 @@ from method_explicit_euler import ExplicitEuler
 from method_implicit_euler import ImplicitEuler
 from rhs_function import ExampleFunc01
 from rhs_function import ExampleFunc01_solution
+from rhs_function import ExampleFunc02
+from rhs_function import ExampleFunc02_solution
 import numpy as np
 import unittest
 
@@ -27,6 +29,23 @@ class TestImplicitEulerExample(unittest.TestCase):
         err = np.max(np.abs(exactSol - numericSol))
         print(err)
         self.assertTrue(err < 4.0*10**(-7))
+
+    def test_accuracy02(self):
+        N = 2**10
+        t = np.linspace(0, 1, num=N)
+        y0 = np.array([1.0, 1.0]).T
+        exactSol = ExampleFunc02_solution(y0, t)
+        # Compute numerical solution:
+        solver = ImplicitEuler(N, y0, [0, 1], ExampleFunc02())
+        solution = solver.generate()
+        numericSol = []
+        for (time, val) in solution:
+            numericSol.append(val)
+
+        numericSol = np.array(numericSol).T
+        err = np.max(np.abs(exactSol - numericSol))
+        print(err)
+        self.assertTrue(err < 1.2*10**(-7))
 
     def test_convergence_rate(self):
         N_arr = [2**n for n in range(5, 11)]

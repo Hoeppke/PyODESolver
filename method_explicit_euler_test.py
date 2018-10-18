@@ -38,10 +38,8 @@ class TestExplicitEulerMethod(unittest.TestCase):
         ee_solver = ExplicitEuler(N, y0, [0, 1], ExampleFunc02())
         solution = ee_solver.generate()
         numericSol = []
-        idx = 0
         for (time, val) in solution:
             numericSol.append(val)
-            idx += 1
 
         numericSol = np.array(numericSol).T
         err = np.max(np.abs(exactSol - numericSol))

@@ -1,6 +1,8 @@
 from method_bdf6 import BDF6Method
 from rhs_function import ExampleFunc01
 from rhs_function import ExampleFunc01_solution
+from rhs_function import ExampleFunc02
+from rhs_function import ExampleFunc02_solution
 import numpy as np
 import unittest
 
@@ -27,6 +29,22 @@ class TestBDF6Example(unittest.TestCase):
         # BDF6 does not work correctly :/
         print("Error = {}".format(err))
         self.assertTrue(err < 10**(-12))
+
+    def test_accuracy02(self):
+        N = 2**10
+        t = np.linspace(0, 1, num=N)
+        y0 = np.array([1.0, 1.0]).T
+        exactSol = ExampleFunc02_solution(y0, t)
+        # Compute numerical solution:
+        solver = BDF6Method(N, y0, [0, 1], ExampleFunc02())
+        solution = solver.generate()
+        numericSol = []
+        for (time, val) in solution:
+            numericSol.append(val)
+
+        numericSol = np.array(numericSol).T
+        err = np.max(np.abs(exactSol - numericSol))
+        self.assertTrue(err < 5.0*10**(-13))
 
     def test_convergence_rate(self):
         N_arr = [2**n for n in range(1, 8)]

@@ -101,7 +101,6 @@ class ExampleFunc02(RHSFunction):
 
     def jacobian(self, y_vec, time):
         # fixed size of 2
-
         J11 = -2*y_vec[0]*y_vec[1]
         J12 = -y_vec[0]**2
         J21 = 0
@@ -113,7 +112,7 @@ class ExampleFunc02(RHSFunction):
 def ExampleFunc02_solution(y_0, t):
     val01 = 1/(np.log(1+t)+1)
     val02 = 1/(1+t)
-    val03 = np.vstack((val01, val02))
+    val03 = np.array([val01, val02])
     return val03
 
 
