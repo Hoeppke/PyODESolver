@@ -1,9 +1,11 @@
 from method_explicit_euler import ExplicitEuler
 from rhs_function import ExampleFunc01
 from rhs_function import ExampleFunc01_solution
+from rhs_function import ExampleFunc02
+from rhs_function import ExampleFunc02_solution
+import matplotlib.pyplot as plt
 import numpy as np
 import unittest
-import matplotlib.pyplot as plt
 
 
 class TestExplicitEulerMethod(unittest.TestCase):
@@ -11,8 +13,7 @@ class TestExplicitEulerMethod(unittest.TestCase):
     def test_accuracy01(self):
         N = 10**5
         t = np.linspace(0, 1, num=N)
-        # y0 = np.sin(np.linspace(-1.0*np.pi, 1.0*np.pi))
-        y0 = np.pi
+        y0 = np.array([np.pi])
         exactSol = ExampleFunc01_solution(y0, t).T
 
         # Compute numerical solution:
@@ -25,6 +26,26 @@ class TestExplicitEulerMethod(unittest.TestCase):
             idx += 1
 
         err = np.max(np.abs(exactSol - numericSol))
+        self.assertTrue(err < 1.2*10**(-5))
+
+    def test_accuracy02(self):
+        N = 2**14
+        t = np.linspace(0, 1, num=N)
+        y0 = np.array([1.0, 1.0]).T
+        exactSol = ExampleFunc02_solution(y0, t)
+
+        # Compute numerical solution:
+        ee_solver = ExplicitEuler(N, y0, [0, 1], ExampleFunc02())
+        solution = ee_solver.generate()
+        numericSol = []
+        idx = 0
+        for (time, val) in solution:
+            numericSol.append(val)
+            idx += 1
+
+        numericSol = np.array(numericSol).T
+        err = np.max(np.abs(exactSol - numericSol))
+        print(err)
         self.assertTrue(err < 1.2*10**(-5))
 
     def test_convergence_rate(self):

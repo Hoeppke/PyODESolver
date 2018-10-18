@@ -94,11 +94,9 @@ class ExampleFunc02(RHSFunction):
         RHSFunction.__init__(self)
 
     def eval(self, y_vec, time):
-
         val1 = -y_vec[0]**2*y_vec[1]
         val2 = -y_vec[1]**2
-        val3 = np.vstack((val1,val2))
-
+        val3 = np.array([val1, val2])
         return val3
 
     def jacobian(self, y_vec, time):
@@ -108,13 +106,11 @@ class ExampleFunc02(RHSFunction):
         J12 = -y_vec[0]**2
         J21 = 0
         J22 = -2*y_vec[1]
-
-        J = np.array([[J11, J12], [J21,J22]])
-
+        J = np.array([[J11, J12], [J21, J22]])
         return J
 
-def ExampleFunc02_solution(y_0,t):
 
+def ExampleFunc02_solution(y_0, t):
     val01 = 1/(np.log(1+t)+1)
     val02 = 1/(1+t)
     val03 = np.vstack((val01, val02))
