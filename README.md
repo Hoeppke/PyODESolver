@@ -1,6 +1,21 @@
 # PyODESolver
 Python package for solving ODEs
 
+## Installation
+
+To install PyODESolver execute:
+
+    python3 -m pip install PyODESolver
+
+This will make the package pyodesolver available for import.
+To this this launch python3
+
+    python3
+
+and import the new package pyodesolver
+
+    import pyodesolver
+
 ## Quickstart guide:
 To get started with using PyODESolver include a solver method.
 In this example we will use the explicit euler method to solve
