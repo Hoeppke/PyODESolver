@@ -15,7 +15,7 @@ class MidPointRule(StepMethod):
         t_old = time
         t_new = time + steplen
         y_old = np.copy(uvec)
-        y_new = np.copy(uvec) + (steplen/2) * func.eval(y_old, t_old)
+        y_new = np.copy(uvec) + (steplen * func.eval(y_old, t_old))
         err = 1
         numit = 0
         sp_I = sparse.eye(len(uvec))
@@ -30,6 +30,10 @@ class MidPointRule(StepMethod):
             A = (sp_I - steplen/2.0 * func.jacobian(y_new, y_new))
             return sparse.csr_matrix(A)
 
+        # In this loop the next value (y_new) is computed by
+        # solving a nonlinear system using newton method.
+        # In order to speed up the newton method the y_new value
+        # is first estimated using Explicit euler
         while err > tolerance and numit < maxiter:
             Jac = myJacF(y_new)
             Fval = myF(y_new)
