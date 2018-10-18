@@ -63,6 +63,7 @@ class GaussLegendre(StepMethod):
                     Jac = myJacF(k1,k2)
                     Fval = myF(k1,k2)
                     if N1==1:
+                        Jac=sparse.csr_matrix(Jac)
                         kappa=-sparse.linalg.spsolve(Jac,Fval)
                     else:
                         kappa=-np.linalg.solve(Jac,Fval)
