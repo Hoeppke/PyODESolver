@@ -56,7 +56,7 @@ class BDF6Method(StepMethod):
             def myJacF(y):
                 val1 = sparse.eye(N)
                 val2 = (60.0 / 147.0) * h * f.jacobian(np.copy(y), t_new)
-                return val1 - val2
+                return sparse.csr_matrix(val1 - val2)
 
             itercount = 0
             err = 1

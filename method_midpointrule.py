@@ -27,8 +27,8 @@ class MidPointRule(StepMethod):
             return val2
 
         def myJacF(y_new):
-            A = (sp_I  - steplen/2.0 * func.jacobian(y_new, y_new))
-            return A
+            A = (sp_I - steplen/2.0 * func.jacobian(y_new, y_new))
+            return sparse.csr_matrix(A)
 
         while err > tolerance and numit < maxiter:
             Jac = myJacF(y_new)
