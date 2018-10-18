@@ -36,8 +36,8 @@ class GaussLegendre(StepMethod):
                 val3 = h*(self.a21*k1+self.a22*k2)
                 f1=f.eval(y_old + val2, t_old+self.c1*h)
                 f2=f.eval(y_old + val3, t_old+self.c2*h)
-                val4 = np.vstack((f1, f2))-val1
-                return val4
+                val4 = np.vstack((f1, f2))
+                return val4.flatten()-val1.flatten()
 
             def myJacF(k1,k2):
                 val2 = h*(self.a11*k1 + self.a12*k2)
@@ -46,19 +46,18 @@ class GaussLegendre(StepMethod):
                 A = f.jacobian(y_old+val2, t_old+self.c1*h)*self.a11*h
                 B = A/self.a11*self.a12
                 C = f.jacobian(y_old+val3, t_old+self.c2*h)*self.a21*h
-                
                 D = C/self.a21*self.a22
-                E = sparse.hstack((A.T, B.T))
-                F = sparse.hstack((C.T, D.T))
-                G = sparse.hstack((E.T, F.T))
-                return G-sparse.eye(2*N1)
+                E = np.vstack((A.T, B.T))
+                F = np.vstack((C.T, D.T))
+                G = np.vstack((E.T, F.T))
+                return G-np.eye(2*N1)
             
             err = 1
             itercount = 0
             while err > tol and itercount < maxiter:
                     Jac = myJacF(k1,k2)
                     Fval = myF(k1,k2)
-                    kappa=-sparse.linalg.spsolve(Jac,Fval)
+                    kappa=-np.linalg.solve(Jac,Fval)
                     k1=kappa[0:N1]+k1
                     k2=kappa[N1:2*N1+1]+k2
                     err=np.max(np.abs(myF(k1,k2)))
