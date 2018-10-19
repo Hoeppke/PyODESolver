@@ -3,7 +3,6 @@ from rhs_function import ExampleFunc01
 from rhs_function import ExampleFunc01_solution
 from rhs_function import ExampleFunc02
 from rhs_function import ExampleFunc02_solution
-import matplotlib.pyplot as plt
 import numpy as np
 import unittest
 

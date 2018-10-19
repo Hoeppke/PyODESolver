@@ -1,8 +1,6 @@
-from method_RK4 import RK4 as RK4
-from method_explicit_euler import ExplicitEuler
-from rhs_function import RHSFunction
 from scipy import optimize
 from step_method import StepMethod
+from method_RK4 import RK4
 import numpy as np
 import scipy.sparse as sparse
 
