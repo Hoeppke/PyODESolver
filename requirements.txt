@@ -3,7 +3,7 @@ cloudpickle==0.5.2
 gajim==1.0.1
 matplotlib==2.1.1
 matplotlib2tikz==0.6.18
-numpy==1.15.2
+numpy==1.22.0
 numpydoc==0.7.0
 pandas==0.22.0
 pandocfilters==1.4.2
